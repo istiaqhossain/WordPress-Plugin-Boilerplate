@@ -28,6 +28,11 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
+require_once __DIR__ . '/vendor/autoload.php';
+
+/**
+ * The main plugin class
+ */
 final class Plugin_Name {
 
     /**
@@ -41,6 +46,12 @@ final class Plugin_Name {
      * Class Constructor
      */
     private function __construct() {
+
+        $this->define_constants();
+
+        register_activation_hook( __FILE__, array( $this, 'activate' ) );
+
+        add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 
     }
 
@@ -70,7 +81,7 @@ final class Plugin_Name {
      * @return void
      */
     public function define_constants() {
-        
+
         define( 'PLUGIN_NAME_VERSION', self::VERSION );
         define( 'PLUGIN_NAME_FILE', __FILE__ );
         define( 'PLUGIN_NAME_PATH', __DIR__ );
@@ -79,10 +90,33 @@ final class Plugin_Name {
 
     }
 
+    /**
+     * Do stuff upon plugin activation
+     *
+     * @return void
+     */
+    public function activate() {
+
+        $installer = new \Author\Plugin_Name\Installer();
+        $installer->run();
+
+    }
+
+    /**
+     * Initialize the plugin
+     *
+     * @return void
+     */
+    public function init_plugin() {
+
+        new \Author\Plugin_Name\Assets();
+        
+    }
+
 }
 
 /**
- * Initializes the plugin
+ * Initializes the main plugin
  *
  * @return \Plugin_Name
  */

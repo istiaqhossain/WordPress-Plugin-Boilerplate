@@ -1,5 +1,5 @@
 {
-    "name": "vendor/plugin-name",
+    "name": "author/plugin-name",
     "description": "This is a short description of what the plugin does.",
     "type": "wordpress-plugin",
     "license": "GPLv2",
@@ -10,5 +10,13 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Author\\Plugin_Name\\" : "includes/"
+        },
+        "files": [
+            "includes/functions.php"
+        ]
+    }
 }
