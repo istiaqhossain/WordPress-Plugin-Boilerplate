@@ -24,6 +24,8 @@
  * Domain Path:       /languages
  */
 
+// don't call the file directly
+
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -43,35 +45,88 @@ final class Plugin_Name {
     const VERSION = '0.0.1';
 
     /**
-     * Class Constructor
+     * Holds various class instances
+     *
+     * @var array
      */
-    private function __construct() {
+    private $container = array();
 
-        $this->define_constants();
-
-        register_activation_hook( __FILE__, array( $this, 'activate' ) );
-
-        add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
-
-    }
+    /**
+     * Plugin Instance
+     *
+     * @var object
+     */
+    private static $instance;
 
     /**
      * Initializes a Singleton Instance
+     *
+     * Checks for an existing Plugin_Name() instance
+     * and if it doesn't find one, creates it.
      *
      * @return \Plugin_Name
      */
     public static function init() {
 
-        /**
-         * @var mixed
-         */
-        static $instance = false;
-
-        if ( $instance === false ) {
-            $instance = new self();
+        if ( !isset( self::$instance ) && !( self::$instance instanceof Plugin_Name ) ) {
+            self::$instance = new Plugin_Name;
+            self::$instance->setup();
         }
 
-        return $instance;
+        return self::$instance;
+
+    }
+
+    /**
+     * Setup the plugin
+     *
+     * @return void
+     */
+    private function setup() {
+
+        // Define constants
+        $this->define_constants();
+
+        register_activation_hook( __FILE__, array( $this, 'activate' ) );
+
+        // Instantiate classes
+        $this->instantiate();
+
+        // Load the modules
+        $this->load_module();
+
+        // Loaded action
+        do_action( 'plugin_name_loaded' );
+
+    }
+
+    /**
+     * Magin getter
+     *
+     * @param $prop
+     *
+     * @return mixed
+     */
+    public function __get( $prop ) {
+
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[$prop];
+        }
+
+        return $this->{$prop};
+
+    }
+
+    /**
+     * Magic isset
+     *
+     * @param $prop
+     *
+     * @return mixed
+     */
+    public function __isset( $prop ) {
+
+        return isset( $this->{$prop} ) || isset( $this->container[$prop] );
 
     }
 
@@ -87,6 +142,7 @@ final class Plugin_Name {
         define( 'PLUGIN_NAME_PATH', __DIR__ );
         define( 'PLUGIN_NAME_URL', plugins_url( '', PLUGIN_NAME_FILE ) );
         define( 'PLUGIN_NAME_ASSETS', PLUGIN_NAME_URL . '/assets' );
+        define( 'PLUGIN_NAME_MODULES', PLUGIN_NAME_PATH . '/modules' );
 
     }
 
@@ -107,10 +163,39 @@ final class Plugin_Name {
      *
      * @return void
      */
-    public function init_plugin() {
+    public function instantiate() {
 
         new \Author\Plugin_Name\Assets();
+
+        $this->container['modules'] = new \Author\Plugin_Name\Framework\Modules();
+
+    }
+
+    /**
+     * Load the modules
+     *
+     * @return void
+     */
+    public function load_module() {
+
+        // $modules = $this->modules->get_modules();
+
+        // if ( $modules == false ) {
+        //     return;
+        // }
+
+        // foreach ( $modules as $key => $module ) {
+
+        //     if ( isset( $module['callback'] ) && class_exists( $module['callback'] ) ) {
+        //         new $module['callback']( $this );
+        //     }
+
+        // }
         
+        // require_once __DIR__ . '/modules/module-one/module-one.php';
+        $module = new \Author\Plugin_Name\ModuleOne\Module_One($this);
+        dd($module);
+
     }
 
 }
