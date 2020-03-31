@@ -30,8 +30,6 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 /**
  * The main plugin class
  */
@@ -86,6 +84,9 @@ final class Plugin_Name {
 
         // Define constants
         $this->define_constants();
+
+        // Include reduired files
+        $this->includes();
 
         register_activation_hook( __FILE__, array( $this, 'activate' ) );
 
@@ -171,6 +172,12 @@ final class Plugin_Name {
 
     }
 
+    private function includes() {
+
+        include dirname( __FILE__ ) . '/vendor/autoload.php';
+
+    }
+
     /**
      * Load the modules
      *
@@ -193,8 +200,8 @@ final class Plugin_Name {
         // }
         
         // require_once __DIR__ . '/modules/module-one/module-one.php';
-        $module = new \Author\Plugin_Name\ModuleOne\Module_One($this);
-        dd($module);
+        // $module = new \Author\Plugin_Name\ModuleOne\Module_One($this);
+        // dd($module);
 
     }
 

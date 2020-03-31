@@ -24,3 +24,6 @@ node_modules/
 
 # ignore vendor directory
 plugin-name/vendor
+
+# ignore composer lock
+composer.lock
