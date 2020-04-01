@@ -13,8 +13,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Author\\Plugin_Name\\" : "includes/",
-            "Author\\Plugin_Name\\ModuleOne\\" : "modules/module-one/"
+            "Author\\PluginName\\": "includes/"
         },
         "files": [
             "includes/functions.php"

@@ -1,5 +1,5 @@
 <?php
-namespace Author\Plugin_Name;
+namespace Author\PluginName;
 
 /**
  * The Installer Class
@@ -12,6 +12,8 @@ class Installer {
      * @return void
      */
     public function run() {
+
+        error_log('Installer Class run!');
 
         $this->add_version();
 

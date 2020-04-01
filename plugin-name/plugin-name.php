@@ -30,6 +30,8 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 /**
  * The main plugin class
  */
@@ -136,14 +138,15 @@ final class Plugin_Name {
      *
      * @return void
      */
-    public function define_constants() {
+    private function define_constants() {
 
         define( 'PLUGIN_NAME_VERSION', self::VERSION );
         define( 'PLUGIN_NAME_FILE', __FILE__ );
         define( 'PLUGIN_NAME_PATH', __DIR__ );
         define( 'PLUGIN_NAME_URL', plugins_url( '', PLUGIN_NAME_FILE ) );
         define( 'PLUGIN_NAME_ASSETS', PLUGIN_NAME_URL . '/assets' );
-        define( 'PLUGIN_NAME_MODULES', PLUGIN_NAME_PATH . '/modules' );
+        define( 'PLUGIN_NAME_INCLUDES', PLUGIN_NAME_PATH . '/includes' );
+        define( 'PLUGIN_NAME_MODULES', PLUGIN_NAME_INCLUDES . '/modules' );
 
     }
 
@@ -154,7 +157,7 @@ final class Plugin_Name {
      */
     public function activate() {
 
-        $installer = new \Author\Plugin_Name\Installer();
+        $installer = new \Author\PluginName\Installer();
         $installer->run();
 
     }
@@ -164,17 +167,20 @@ final class Plugin_Name {
      *
      * @return void
      */
-    public function instantiate() {
+    private function instantiate() {
 
-        new \Author\Plugin_Name\Assets();
+        new \Author\PluginName\Assets();
 
-        $this->container['modules'] = new \Author\Plugin_Name\Framework\Modules();
+        $this->container['modules'] = new \Author\PluginName\Framework\Modules();
 
     }
 
-    private function includes() {
-
-        include dirname( __FILE__ ) . '/vendor/autoload.php';
+    /**
+     * Include the required files
+     *
+     * @return void
+     */
+    private function includes() {  
 
     }
 
@@ -185,22 +191,21 @@ final class Plugin_Name {
      */
     public function load_module() {
 
-        // $modules = $this->modules->get_modules();
-
-        // if ( $modules == false ) {
-        //     return;
-        // }
-
-        // foreach ( $modules as $key => $module ) {
-
-        //     if ( isset( $module['callback'] ) && class_exists( $module['callback'] ) ) {
-        //         new $module['callback']( $this );
-        //     }
-
-        // }
+        $modules = $this->modules->get_modules();
         
-        // require_once __DIR__ . '/modules/module-one/module-one.php';
-        // $module = new \Author\Plugin_Name\ModuleOne\Module_One($this);
+        if ( $modules == false ) {
+            return;
+        }
+
+        foreach ( $modules as $key => $module ) {
+
+            if ( isset( $module['callback'] ) && class_exists( $module['callback'] ) ) {
+                new $module['callback']( $this );
+            }
+
+        }
+
+        // $module = new \Author\PluginName\Modules\Module_One\Module_One($this);
         // dd($module);
 
     }

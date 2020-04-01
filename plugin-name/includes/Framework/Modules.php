@@ -1,5 +1,5 @@
 <?php
-namespace Author\Plugin_Name\Framework;
+namespace Author\PluginName\Framework;
 
 /**
  * The Modules Class
@@ -29,14 +29,14 @@ class Modules {
                 'title'       => __( 'Module One', 'plugin-name' ),
                 'slug'        => 'plugin-name-module-one',
                 'description' => __( 'Module One Description', 'plugin-name' ),
-                'callback'    => '\Author\Plugin_Name\ModuleOne\Module_One',
+                'callback'    => '\Author\PluginName\Modules\Module_One\Module_One',
                 'modules'     => apply_filters( 'plugin_name_module_one_modules', array() ),
             ),
             'module-two' => array(
                 'title'       => __( 'Module Two', 'plugin-name' ),
                 'slug'        => 'plugin-name-module-two',
                 'description' => __( 'Module Two Description', 'plugin-name' ),
-                'callback'    => '\Author\Plugin_Name\ModuleTwo\Module_Two',
+                'callback'    => '\Author\PluginName\Modules\Module_Two\Module_Two',
                 'modules'     => apply_filters( 'plugin_name_module_two_modules', array() ),
             ),
         );

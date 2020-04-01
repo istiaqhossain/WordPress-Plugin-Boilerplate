@@ -1,5 +1,5 @@
 <?php
-namespace Author\Plugin_Name\Framework\Traits;
+namespace Author\PluginName\Framework\Traits;
 
 /**
  * Trait Hooker

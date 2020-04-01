@@ -1,5 +1,5 @@
 <?php
-namespace Author\Plugin_Name;
+namespace Author\PluginName;
 
 /**
  * Asset handler class
@@ -10,6 +10,8 @@ class Assets {
      * Class Constructor
      */
     public function __construct() {
+
+        error_log('Assets Class run!');
 
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );

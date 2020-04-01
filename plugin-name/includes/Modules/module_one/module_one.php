@@ -1,5 +1,5 @@
 <?php
-namespace Author\Plugin_Name\ModuleOne;
+namespace Author\PluginName\Modules\Module_One;
 
 /**
  * The Module_One Class
@@ -18,11 +18,11 @@ class Module_One {
      */
     public function __construct( \Plugin_Name $plugin ) {
 
-        dd('HI');
-
         if ( did_action( 'plugin_name_module_one_loaded' ) ) {
             return;
         }
+        
+        error_log("Module_One construct!");
 
         $this->plugin = $plugin;
 
@@ -41,7 +41,7 @@ class Module_One {
      */
     public function define_constants() {
 
-        define( 'PLUGIN_NAME_MODULE_1_FILE', __FILE__ );
+        define( 'PLUGIN_NAME_MODULE_ONE_FILE', __FILE__ );
 
     }
 
